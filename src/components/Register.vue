@@ -1,8 +1,14 @@
 <template>
   <div class="hello">
     <div class="holder">
-
       
+      <md-field>
+        <label>API Key</label>
+        <md-input v-model="apiKey"></md-input>
+        <md-icon>lock</md-icon>
+      </md-field>
+
+      <p>{{ apiKey }}</p>
       <form @submit.prevent="addQuestion">
         <input type="text" placeholder="enter a skill" v-model="question">
       </form>
@@ -16,7 +22,7 @@
         </transition-group>
       </ul>
     
-    <p>Here are your selected values</p>
+      <p>Here are your selected values</p>
     </div>
   </div>
   
@@ -27,6 +33,7 @@ export default {
   name: 'Register',
   data() {
     return {
+      apiKey: '',
       question: '',
       questions: [
         { "question": "How heard?" },
@@ -46,7 +53,28 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style src="./Register.css" scoped>
+<style scoped>
+
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
+.item-added-enter-active {
+  animation: bounce-in .5s;
+}
+
+.item-added-leave-active {
+  animation: bounce-in .5s reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 </style>

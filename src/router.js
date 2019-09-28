@@ -9,11 +9,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'register',
+      name: 'Register',
       component: Register
     },
     {
-      path: '/about',
+      path: '/about/:name',
       name: 'about',
       component: About
     }
