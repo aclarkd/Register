@@ -1,17 +1,30 @@
 <template>
   <div class="holder">
-    <form @submit.prevent="getProjectSettings">
-    <md-field>
-      <label>API Key</label>
-      <md-input v-model="apiKey" v-on:focus="$event.target.select()"></md-input>
-      <md-icon v-html="authenticationIcon"></md-icon>
-    </md-field>
-    {{ fetchError }}
+    <form @submit.prevent="loadProjectSettings">
+      <md-field>
+        <label>Paste API Key, push enter</label>
+        <md-input v-model="apiKey" v-on:focus="$event.target.select()"></md-input>
+        <md-icon v-html="authenticationIcon"></md-icon>
+      </md-field>
     </form>
+    <div class="error-container" v-if="fetchError">
+      <span><md-icon class="md-accent">lock</md-icon></span>
+      <span>{{ fetchError }}</span>
+    </div>
   
-    <p>Project Settings</p>
+    <div v-if="projectName">
+      <p  class="md-subheader">{{ projectName }} Registration Options</p>
 
-    <p>{{ projectSettings }}</p>
+      <md-field>
+          <label for="rotation">Rotation</label>
+          <md-select v-model="selectedRotation" name="rotation" id="rotation">
+            <md-option v-for="availableRotation in availableRotations" 
+              v-bind:key="availableRotation" 
+              :value="availableRotation.rotationId">{{ availableRotation.rotationName }}</md-option>
+          </md-select>
+        </md-field>
+    </div>
+
   </div>
 </template>
 
@@ -23,20 +36,23 @@ export default {
   data() {
     return {
       apiKey: '',
-      projectSettings: '',
-      fetchError: ''
+      fetchError: '',
+      projectName: '',
+      availableRotations: '',
+      selectedRotation: ''
     }
   },
   methods: {
-    getProjectSettings() {
+    loadProjectSettings() {
       axios.get('http://localhost:4000/project-settings', { headers: { Authorization: 'Bearer'.concat(' ', this.apiKey) } })
         .then(response => {
-            this.projectSettings = response.data
+            this.projectName = response.data.project.name
+            this.availableRotations = response.data.rotations
             this.fetchError = '';
         })
         .catch((error) => {
           if(error.response.status == 401) { // Auth Failed
-            this.fetchError = "Authentication failed while fetching registration options with the key provided. Please verify your key and try again."
+            this.fetchError = "Authentication failed while fetching registration options with the API key provided. Please verify your key and try again."
           }
           if(error.response.status == 500) { // Not sure what happened
             this.fetchError = "Well... we're not sure what happened, but it didn't work. Grab a coffe and try again, if that doesn't work contact Lasso."
@@ -52,9 +68,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .holder {
   padding: 10px;
 }
+
+.icon-with-text {
+  vertical-align: bottom;
+}
+
+.error-container md-icon {
+  color: purple;
+}
+
 </style>

@@ -13,7 +13,7 @@
 
     <md-drawer :md-active.sync="showNavigation" md-swipeable>
       <md-toolbar class="md-transparent" md-elevation="0">
-        <span class="md-title">Registration</span>
+        <span class="md-title">Downloads</span>
       </md-toolbar>
 
       <md-list>
@@ -41,7 +41,7 @@
 
     <md-drawer class="md-right" :md-active.sync="showSidepanel">
       <md-toolbar class="md-transparent" md-elevation="0">
-        <span class="md-title">Favorites</span>
+        <span class="md-title">Help</span>
       </md-toolbar>
 
       <md-list>
@@ -94,13 +94,4 @@ export default {
 
 <style lang="scss">
 @import url('//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons');
-
-@import "~vue-material/dist/theme/engine";
-
-@include md-register-theme("default", (
-  primary: #3fffbe,
-  accent: #1a11e8
-));
-
-@import "~vue-material/dist/theme/all";
 </style>
