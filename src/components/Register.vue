@@ -29,12 +29,6 @@ export default {
   },
   methods: {
     getProjectSettings() {
-      this.$nextTick()
-      .then(function (args) {
-        console.log(args)
-        console.log(this.apiKey)
-      })
-      
       axios.get('http://localhost:4000/project-settings', { headers: { Authorization: 'Bearer'.concat(' ', this.apiKey) } })
         .then(response => {
             this.projectSettings = response.data
