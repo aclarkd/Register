@@ -13,18 +13,60 @@
     </div>
   
     <div v-if="projectName">
-      <p  class="md-subheader">{{ projectName }} Registration Options</p>
+      <span class="md-title">Select your registration options for: {{ projectName }}</span>
 
       <md-field>
-          <label for="rotation">Rotation</label>
-          <md-select v-model="selectedRotation" name="rotation" id="rotation">
-            <md-option v-for="availableRotation in availableRotations" 
-              v-bind:key="availableRotation" 
-              :value="availableRotation.rotationId">{{ availableRotation.rotationName }}</md-option>
-          </md-select>
-        </md-field>
+        <label for="rotation">Rotation</label>
+        <md-select v-model="selected.rotation" name="rotation" id="rotation">
+          <md-option v-for="rotation in availableRotations" 
+            v-bind:key="rotation.rotationId" 
+            :value="rotation.rotationId">{{ rotation.rotationName }}</md-option>
+        </md-select>
+      </md-field>
+
+      <md-field>
+        <label for="auto-reply">Auto Reply Template</label>
+        <md-select v-model="selected.autoReply" name="auto-reply" id="auto-reply">
+          <md-option v-for="autoReply in availableAutoReplyTemplates" 
+            v-bind:key="autoReply.templateId" 
+            :value="autoReply.templateId">{{ autoReply.name }}</md-option>
+        </md-select>
+      </md-field>
+
+      <md-field>
+        <label for="website-tracking">Website Trackers</label>
+        <md-select v-model="selected.trackingDomain" name="website-tracking" id="website-tracking">
+          <md-option v-for="trackingDomain in availableTrackingDomains" 
+            v-bind:key="trackingDomain.domainAccountId" 
+            :value="trackingDomain.domainAccountId">{{ trackingDomain.domain }}</md-option>
+        </md-select>
+      </md-field>
+
+      <div class="block">
+          <div class="title">Spam Deterrent</div>
+          <div class="input">
+            <md-checkbox name="honeypot" id="honeypot" v-model="selected.honeypot">Include Honeypot</md-checkbox>
+          </div>
+      </div>
+
+      <div class="block">
+          <div class="title">Questions</div>
+          <div class="input">
+            <md-checkbox class="question-checkbox-container" v-model="selected.questions" v-for="question in availableQuestions" 
+              v-bind:key="question.questionId"
+              :value="question.questionId">{{ question.name }}
+              <div v-if="selected.questions.includes(question.questionId)">
+                <ul>
+                  <li>yes its there</li>
+                </ul>
+              </div>
+            </md-checkbox>
+          </div>
+      </div>
+
     </div>
 
+    <span>{{ selected }}</span>
   </div>
 </template>
 
@@ -39,7 +81,16 @@ export default {
       fetchError: '',
       projectName: '',
       availableRotations: '',
-      selectedRotation: ''
+      availableAutoReplyTemplates: '',
+      availableTrackingDomains: '',
+      availableQuestions: '',
+      selected: {
+        rotation: '',
+        autoReply: '',
+        trackingDomain: '',
+        honeypot: '',
+        questions: []
+      }
     }
   },
   methods: {
@@ -48,6 +99,9 @@ export default {
         .then(response => {
             this.projectName = response.data.project.name
             this.availableRotations = response.data.rotations
+            this.availableAutoReplyTemplates = response.data.autoReplyTemplates
+            this.availableTrackingDomains = response.data.websiteTracking
+            this.availableQuestions = response.data.questions
             this.fetchError = '';
         })
         .catch((error) => {
@@ -62,7 +116,7 @@ export default {
   },
   computed: {
     authenticationIcon: function () {
-      return this.projectSettings ? '&#xe898' : '&#xe897'
+      return this.projectName ? '&#xe898' : '&#xe897'
     }
   }
 }
@@ -74,12 +128,12 @@ export default {
   padding: 10px;
 }
 
-.icon-with-text {
-  vertical-align: bottom;
+.md-checkbox {
+  display: flex;
 }
 
-.error-container md-icon {
-  color: purple;
+#question-checkbox-container .md-checkbox-label {
+  height: auto;
 }
 
 </style>

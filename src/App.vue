@@ -46,7 +46,7 @@
 
       <md-list>
         <md-list-item>
-          <span class="md-list-item-text">Abbey Christansen</span>
+          <span class="md-list-item-text">Rotation</span>
 
           <md-button class="md-icon-button md-list-action">
             <md-icon class="md-primary">chat_bubble</md-icon>
@@ -54,7 +54,7 @@
         </md-list-item>
 
         <md-list-item>
-          <span class="md-list-item-text">Alex Nelson</span>
+          <span class="md-list-item-text">Auto Reply</span>
 
           <md-button class="md-icon-button md-list-action">
             <md-icon class="md-primary">chat_bubble</md-icon>
@@ -62,7 +62,7 @@
         </md-list-item>
 
         <md-list-item>
-          <span class="md-list-item-text">Mary Johnson</span>
+          <span class="md-list-item-text">Website Tracker</span>
 
           <md-button class="md-icon-button md-list-action">
             <md-icon>chat_bubble</md-icon>
